@@ -6,7 +6,7 @@ import torch
 import runpod
 
 from utils import extract_origin_pathname, upload_image, rounded_size
-from txt2img import txt2img, img2img, compel_proc
+from render import txt2img, img2img, compel_proc
 
 def run (job, _generator = None):
     # prepare task
