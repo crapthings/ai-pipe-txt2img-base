@@ -6,15 +6,13 @@ from config import model_name
 
 print('cache model')
 
-pipe = StableDiffusionPipeline.from_single_file(
+text2image = StableDiffusionPipeline.from_single_file(
   model_name,
-  torch_dtype = torch.float16,
-  variant = 'fp16',
-  use_safetensors = True
+  torch_dtype = torch.float16
 )
 
-pipe2 = AutoPipelineForImage2Image.from_pipe(pipe)
+image2image = AutoPipelineForImage2Image.from_pipe(text2image)
 
-compel_proc = Compel(tokenizer = pipe.tokenizer, text_encoder = pipe.text_encoder)
+compel_proc = Compel(tokenizer = text2image.tokenizer, text_encoder = text2image.text_encoder)
 
 print('done')

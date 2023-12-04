@@ -12,9 +12,7 @@ safety_checker.StableDiffusionSafetyChecker.forward = sc
 
 txt2imgPipe = StableDiffusionPipeline.from_single_file(
   model_name,
-  torch_dtype = torch.float16,
-  variant = 'fp16',
-  use_safetensors = True
+  torch_dtype = torch.float16
 )
 
 txt2imgPipe.scheduler = EulerAncestralDiscreteScheduler.from_config(txt2imgPipe.scheduler.config)

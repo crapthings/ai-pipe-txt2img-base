@@ -1,1 +1,1 @@
-model_name = './photon_v1.safetensors'
+model_name = './model.safetensors'
