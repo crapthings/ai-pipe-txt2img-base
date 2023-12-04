@@ -8,12 +8,12 @@ path = hf_hub_download('Bingsu/adetailer', 'face_yolov8n.pt')
 detector = YOLO(path)
 
 def fix_face (input_image):
-    results = detector(input_image)
+    result = detector(input_image)[0]
 
-    if len(results) < 1:
+    if result.masks is None:
         return input_image
 
-    bboxes = results[0].boxes.xyxy.cpu().numpy()
+    bboxes = result.boxes.xyxy.cpu().numpy()
 
     face_mask = create_mask_from_bbox(bboxes, input_image.size)[0]
 

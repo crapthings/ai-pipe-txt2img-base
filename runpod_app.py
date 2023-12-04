@@ -25,10 +25,9 @@ def run (job, _generator = None):
         num_inference_steps = int(np.clip(_input.get('num_inference_steps', 30), 20, 150))
         guidance_scale = float(np.clip(_input.get('guidance_scale', 13.0), 0, 30))
         seed = _input.get('seed')
+
         sampler = _input.get('sampler')
-
         upscale = _input.get('upscale')
-
         strength = _input.get('strength')
 
         if strength is not None:
