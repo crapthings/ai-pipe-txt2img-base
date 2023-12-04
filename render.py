@@ -1,7 +1,7 @@
 import torch
 from diffusers.pipelines.stable_diffusion import safety_checker
 from diffusers import StableDiffusionPipeline, AutoPipelineForImage2Image
-from diffusers import EulerAncestralDiscreteScheduler
+from diffusers import EulerAncestralDiscreteScheduler, UniPCMultistepScheduler
 from compel import Compel
 
 from config import model_name
@@ -42,3 +42,15 @@ def text_to_image (**props):
 def image_to_image (**props):
   output = image_to_image_pipeline(**props)
   return output
+
+# sampler
+
+sampler_dict = {
+  'EulerAncestralDiscreteScheduler': EulerAncestralDiscreteScheduler,
+  'UniPCMultistepScheduler': UniPCMultistepScheduler
+}
+
+def set_sampler (scheduler_name):
+  sampler = sampler_dict.get(scheduler_name, EulerAncestralDiscreteScheduler)
+  text_to_image_pipeline.scheduler = sampler.from_config(text_to_image_pipeline.scheduler.config)
+  image_to_image_pipeline.scheduler = sampler.from_config(image_to_image_pipeline.scheduler.config)

@@ -6,7 +6,7 @@ import torch
 import runpod
 
 from utils import extract_origin_pathname, upload_image, rounded_size
-from render import text_to_image, image_to_image, prompt_encoder
+from render import text_to_image, image_to_image, prompt_encoder, set_sampler
 
 def run (job, _generator = None):
     # prepare task
@@ -25,6 +25,7 @@ def run (job, _generator = None):
         num_inference_steps = int(np.clip(_input.get('num_inference_steps', 30), 20, 150))
         guidance_scale = float(np.clip(_input.get('guidance_scale', 13.0), 0, 30))
         seed = _input.get('seed')
+        sampler = _input.get('sampler')
 
         upscale = _input.get('upscale')
 
@@ -40,6 +41,9 @@ def run (job, _generator = None):
 
         if seed is not None:
             _generator = torch.Generator(device = 'cuda').manual_seed(seed)
+
+        if sampler is not None:
+            set_sampler(sampler)
 
         prompt_embeds = prompt_encoder(prompt)
         negative_prompt_embeds = prompt_encoder(negative_prompt)

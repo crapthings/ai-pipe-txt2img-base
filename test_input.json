@@ -12,7 +12,9 @@
         "guidance_scale": 8.5,
 
         "upscale": 2.0,
-        "strength": 0.5
+        "strength": 0.5,
+
+        "sampler": "UniPCMultistepScheduler"
     },
     "webhook": "http://localhost:3000/api/runpod-webhook"
 }
