@@ -20,7 +20,8 @@ text_to_image_pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(t
 
 text_to_image_pipeline.enable_freeu(s1 = 0.9, s2 = 0.2, b1 = 1.2, b2 = 1.4)
 
-text_to_image_pipeline.to('cuda')
+# text_to_image_pipeline.to('cuda')
+text_to_image_pipeline.enable_model_cpu_offload()
 
 # image to image pipeline
 
