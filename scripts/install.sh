@@ -5,4 +5,5 @@ pip install runpod \
     transformers \
     accelerate \
     omegaconf \
-    compel
+    compel \
+    scipy
