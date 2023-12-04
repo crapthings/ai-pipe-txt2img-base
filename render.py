@@ -1,7 +1,7 @@
 import torch
 from diffusers.pipelines.stable_diffusion import safety_checker
 from diffusers import StableDiffusionPipeline, AutoPipelineForImage2Image
-from diffusers import DPMSolverMultistepScheduler, EulerAncestralDiscreteScheduler, HeunDiscreteScheduler, UniPCMultistepScheduler
+from diffusers import DPMSolverMultistepScheduler, EulerAncestralDiscreteScheduler, HeunDiscreteScheduler, LMSDiscreteScheduler, UniPCMultistepScheduler
 from compel import Compel
 
 from config import model_name
@@ -49,6 +49,7 @@ sampler_dict = {
   'DPMSolverMultistepScheduler': DPMSolverMultistepScheduler,
   'EulerAncestralDiscreteScheduler': EulerAncestralDiscreteScheduler,
   'HeunDiscreteScheduler': HeunDiscreteScheduler,
+  'LMSDiscreteScheduler': LMSDiscreteScheduler,
   'UniPCMultistepScheduler': UniPCMultistepScheduler
 }
 
@@ -60,3 +61,7 @@ def set_sampler (scheduler_name):
   if scheduler_name == 'DPMSolverMultistepScheduler':
     text_to_image_pipeline.scheduler = sampler.from_config(text_to_image_pipeline.scheduler.config, algorithm_type = 'sde-dpmsolver++', use_karras_sigmas = True)
     image_to_image_pipeline.scheduler = sampler.from_config(image_to_image_pipeline.scheduler.config, algorithm_type = 'sde-dpmsolver++', use_karras_sigmas = True)
+
+  elif scheduler_name == 'LMSDiscreteScheduler':
+    text_to_image_pipeline.scheduler = sampler.from_config(text_to_image_pipeline.scheduler.config, use_karras_sigmas = True)
+    image_to_image_pipeline.scheduler = sampler.from_config(image_to_image_pipeline.scheduler.config, use_karras_sigmas = True)
