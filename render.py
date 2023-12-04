@@ -1,7 +1,7 @@
 import torch
 from diffusers.pipelines.stable_diffusion import safety_checker
 from diffusers import StableDiffusionPipeline, AutoPipelineForImage2Image
-from diffusers import EulerAncestralDiscreteScheduler, UniPCMultistepScheduler
+from diffusers import DPMSolverMultistepScheduler, EulerAncestralDiscreteScheduler, HeunDiscreteScheduler, UniPCMultistepScheduler
 from compel import Compel
 
 from config import model_name
@@ -46,7 +46,9 @@ def image_to_image (**props):
 # sampler
 
 sampler_dict = {
+  'DPMSolverMultistepScheduler': DPMSolverMultistepScheduler,
   'EulerAncestralDiscreteScheduler': EulerAncestralDiscreteScheduler,
+  'HeunDiscreteScheduler': HeunDiscreteScheduler,
   'UniPCMultistepScheduler': UniPCMultistepScheduler
 }
 
@@ -54,3 +56,7 @@ def set_sampler (scheduler_name):
   sampler = sampler_dict.get(scheduler_name, EulerAncestralDiscreteScheduler)
   text_to_image_pipeline.scheduler = sampler.from_config(text_to_image_pipeline.scheduler.config)
   image_to_image_pipeline.scheduler = sampler.from_config(image_to_image_pipeline.scheduler.config)
+
+  if scheduler_name == 'DPMSolverMultistepScheduler':
+    text_to_image_pipeline.scheduler = sampler.from_config(text_to_image_pipeline.scheduler.config, algorithm_type = 'sde-dpmsolver++', use_karras_sigmas = True)
+    image_to_image_pipeline.scheduler = sampler.from_config(image_to_image_pipeline.scheduler.config, algorithm_type = 'sde-dpmsolver++', use_karras_sigmas = True)
