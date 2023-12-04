@@ -6,4 +6,5 @@ pip install runpod \
     accelerate \
     omegaconf \
     compel \
+    ultralytics \
     scipy
