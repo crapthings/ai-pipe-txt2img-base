@@ -1,6 +1,7 @@
 import torch
 from diffusers import StableDiffusionPipeline, AutoPipelineForImage2Image
 from compel import Compel
+from face import fix_face
 
 from config import model_name
 
