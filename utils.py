@@ -27,3 +27,6 @@ def rounded_size (width, height):
         rounded_height += 8
 
     return int(rounded_width), int(rounded_height)
+
+def sc(self, clip_input, images):
+    return images, [False for i in images]

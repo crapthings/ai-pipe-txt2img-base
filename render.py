@@ -5,32 +5,39 @@ from diffusers import EulerAncestralDiscreteScheduler
 from compel import Compel
 
 from config import model_name
-
-def sc(self, clip_input, images): return images, [False for i in images]
+from utils import sc
 
 safety_checker.StableDiffusionSafetyChecker.forward = sc
 
-txt2imgPipe = StableDiffusionPipeline.from_single_file(
+# text to image
+
+text_to_image_pipeline = StableDiffusionPipeline.from_single_file(
   model_name,
   torch_dtype = torch.float16
 )
 
-txt2imgPipe.scheduler = EulerAncestralDiscreteScheduler.from_config(txt2imgPipe.scheduler.config)
+text_to_image_pipeline.scheduler = EulerAncestralDiscreteScheduler.from_config(text_to_image_pipeline.scheduler.config)
 
-txt2imgPipe.enable_freeu(s1 = 0.9, s2 = 0.2, b1 = 1.2, b2 = 1.4)
+text_to_image_pipeline.enable_freeu(s1 = 0.9, s2 = 0.2, b1 = 1.2, b2 = 1.4)
 
-txt2imgPipe.to('cuda')
+text_to_image_pipeline.to('cuda')
 
-img2imgPipe = AutoPipelineForImage2Image.from_pipe(txt2imgPipe)
+# image to image pipeline
 
-img2imgPipe.enable_freeu(s1 = 0.9, s2 = 0.2, b1 = 1.2, b2 = 1.4)
+image_to_image_pipeline = AutoPipelineForImage2Image.from_pipe(text_to_image_pipeline)
 
-compel_proc = Compel(tokenizer = txt2imgPipe.tokenizer, text_encoder = txt2imgPipe.text_encoder)
+image_to_image_pipeline.enable_freeu(s1 = 0.9, s2 = 0.2, b1 = 1.2, b2 = 1.4)
 
-def txt2img (**props):
-  output = txt2imgPipe(**props)
+# prompt weighting
+
+prompt_encoder = Compel(tokenizer = text_to_image_pipeline.tokenizer, text_encoder = text_to_image_pipeline.text_encoder)
+
+# render
+
+def text_to_image (**props):
+  output = text_to_image_pipeline(**props)
   return output
 
-def img2img (**props):
-  output = img2imgPipe(**props)
+def image_to_image (**props):
+  output = image_to_image_pipeline(**props)
   return output
