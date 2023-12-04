@@ -7,4 +7,5 @@ pip install runpod \
     omegaconf \
     compel \
     ultralytics \
-    scipy
+    scipy \
+    opencv-python
