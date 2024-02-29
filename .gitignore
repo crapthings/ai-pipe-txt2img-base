@@ -5,3 +5,5 @@ venv/
 models/
 sample.png
 *.safetensors
+input/*
+output/*

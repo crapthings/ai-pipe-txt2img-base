@@ -1,11 +1,3 @@
 pip install --upgrade pip
 
-pip install runpod \
-    diffusers \
-    transformers \
-    accelerate \
-    omegaconf \
-    compel \
-    ultralytics \
-    scipy \
-    opencv-python
+pip install -r ./ESRGAN/requirements.txt
